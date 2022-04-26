@@ -20,10 +20,11 @@ class CreateBooksTable extends Migration
             $table->string('pages');
             $table->string('ISBN');
             $table->string('edition');
-            $table->string('pieces');
+            $table->bigInteger('pieces');
             $table->string('clasification');
             $table->string('editorial');
             $table->string('place');
+            $table->bigInteger('serialnumber');
             $table->timestamps();
         });
     }

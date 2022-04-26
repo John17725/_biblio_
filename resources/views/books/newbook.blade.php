@@ -1,5 +1,5 @@
-<!doctype html>
-<html lang="en">
+<!DOCTYPE html>
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
     <!-- Required meta tags -->
     <meta charset="utf-8">
@@ -13,41 +13,50 @@
 <body>
     <br>
     <div class="container">
-        <form>
-            <div class="mb-3">
-              <label for="exampleInputEmail1" class="form-label">Titulo del libro</label>
-              <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+        <form action="/saveBook" method="POST">
+            @csrf
+            <div class="form-group">
+              <label for="titlebook" class="form-label">Titulo del libro</label>
+              <input type="text" class="form-control" id="titlebook" name="titlebook">
             </div>
             <div class="mb-3">
-                <label for="exampleInputEmail1" class="form-label">Autor</label>
-                <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+                <label for="authorbook" class="form-label">Autor</label>
+                <input type="text" class="form-control" id="authorbook" name="authorbook">
             </div>
             <div class="mb-3">
-                <label for="exampleInputEmail1" class="form-label">Paginas</label>
-                <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+                <label for="pagesbook" class="form-label">Paginas</label>
+                <input type="text" class="form-control" id="pagesbook" name="pagesbook">
             </div>
             <div class="mb-3">
-                <label for="exampleInputEmail1" class="form-label">ISBN</label>
-                <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+                <label for="isbnbook" class="form-label">ISBN</label>
+                <input type="text" class="form-control" id="isbnbook" name="isbnbook">
             </div>
             <div class="mb-3">
-                <label for="exampleInputEmail1" class="form-label">Editorial</label>
-                <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+                <label for="editionbook" class="form-label">Edicion</label>
+                <input type="text" class="form-control" id="editionbook" name="editionbook">
             </div>
             <div class="mb-3">
-                <label for="exampleInputEmail1" class="form-label">Numero de serie</label>
-                <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+                <label for="numpiecesbook" class="form-label">Numero de piezas</label>
+                <input type="text" class="form-control" id="numpiecesbook" name="numpiecesbook">
             </div>
             <div class="mb-3">
-                <label for="exampleInputEmail1" class="form-label">Clasificacion</label>
-                <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+                <label for="clasificationbook" class="form-label">Clasificacion</label>
+                <input type="text" class="form-control" id="clasificationbook" name="clasificationbook">
             </div>
             <div class="mb-3">
-                <label for="exampleInputEmail1" class="form-label">Numero de piezas</label>
-                <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+                <label for="editorialbook" class="form-label">Editorial</label>
+                <input type="text" class="form-control" id="editorialbook" name="editorialbook">
+            </div>
+            <div class="mb-3">
+                <label for="placebook" class="form-label">Lugar</label>
+                <input type="text" class="form-control" id="placebook" name="placebook">
+            </div>
+            <div class="mb-3">
+                <label for="numseriebook" class="form-label">Numero de serie</label>
+                <input type="text" class="form-control" id="numseriebook" name="numseriebook">
             </div>
             <button type="submit" class="btn btn-primary">Guardar</button>
-          </form>
+        </form>
     </div>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.3/dist/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
