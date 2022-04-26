@@ -12,4 +12,8 @@ class BookController extends Controller
             'books' => Book::orderBy('id','asc')->simplePaginate(10)
         ]);
     }
+
+    public function RegisterrBook(){
+        return view('books.newbook');
+    }
 }

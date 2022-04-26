@@ -18,3 +18,4 @@ use App\Http\Controllers\LendsController;
 Route::get('libros/', [BookController::class,'index']);
 Route::get('usuarios/', [StudentController::class, 'index']);
 Route::get('prestamos/', [LendsController::class, 'index']);
+Route::get('/registrar-libro', [BookController::class,'RegisterrBook']);
