@@ -22,3 +22,6 @@ Route::get('usuarios/', [StudentController::class, 'index']);
 Route::get('prestamos/', [LendsController::class, 'index']);
 Route::get('registrar-libro/', [BookController::class,'RegisterrBook']);
 Route::post('/saveBook', [BookController::class,'saveBook']);
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
