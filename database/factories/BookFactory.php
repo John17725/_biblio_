@@ -22,7 +22,8 @@ class BookFactory extends Factory
             'pieces' => rand(1,20),
             'clasification' => $this->faker->sentence,
             'editorial' => $this->faker->sentence,
-            'place' => $this->faker->sentence
+            'place' => $this->faker->sentence,
+            'serialnumber' => rand(1,900)
         ];
     }
 }
