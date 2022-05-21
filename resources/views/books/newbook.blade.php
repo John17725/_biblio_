@@ -1,70 +1,53 @@
-<!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-
-<head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/css/bootstrap.min.css"
-        integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
-
-    <title>Lib</title>
-</head>
-
-<body>
-    <br>
-    <div class="container">
-        <form action="/saveBook" method="POST">
-            @csrf
-            <div class="section-left-form">
-                <div class="form-group">
-                    <label for="titlebook" class="form-label">Titulo del libro</label>
-                    <input type="text" class="form-control" id="titlebook" name="titlebook">
-                </div>
-                <div class="mb-3">
-                    <label for="authorbook" class="form-label">Autor</label>
-                    <input type="text" class="form-control" id="authorbook" name="authorbook">
-                </div>
-                <div class="mb-3">
-                    <label for="pagesbook" class="form-label">Paginas</label>
-                    <input type="text" class="form-control" id="pagesbook" name="pagesbook">
-                </div>
-                <div class="mb-3">
-                    <label for="isbnbook" class="form-label">ISBN</label>
-                    <input type="text" class="form-control" id="isbnbook" name="isbnbook">
-                </div>
-                <div class="mb-3">
-                    <label for="editionbook" class="form-label">Edicion</label>
-                    <input type="text" class="form-control" id="editionbook" name="editionbook">
-                </div>
-                <div class="mb-3">
-                    <label for="numpiecesbook" class="form-label">Numero de piezas</label>
-                    <input type="text" class="form-control" id="numpiecesbook" name="numpiecesbook">
-                </div>
-                <div class="mb-3">
-                    <label for="clasificationbook" class="form-label">Clasificacion</label>
-                    <input type="text" class="form-control" id="clasificationbook" name="clasificationbook">
-                </div>
-                <div class="mb-3">
-                    <label for="editorialbook" class="form-label">Editorial</label>
-                    <input type="text" class="form-control" id="editorialbook" name="editorialbook">
-                </div>
-                <div class="mb-3">
-                    <label for="placebook" class="form-label">Lugar</label>
-                    <input type="text" class="form-control" id="placebook" name="placebook">
-                </div>
-                <div class="mb-3">
-                    <label for="numseriebook" class="form-label">Numero de serie</label>
-                    <input type="text" class="form-control" id="numseriebook" name="numseriebook">
-                </div>
+@section('newbook')
+    <form action="/saveBook" method="POST">
+        @csrf
+        <div class="section-left-form">
+            <div class="form-group">
+                <label for="titlebook" class="form-label">Titulo del libro</label>
+                <input type="text" class="form-control" id="titlebook" name="titlebook">
             </div>
-            <div class="section-right-form">
-
+            <div class="mb-3">
+                <label for="authorbook" class="form-label">Autor</label>
+                <input type="text" class="form-control" id="authorbook" name="authorbook">
             </div>
-            <button type="submit" class="btn btn-primary">Guardar</button>
-        </form>
+            <div class="mb-3">
+                <label for="pagesbook" class="form-label">Paginas</label>
+                <input type="text" class="form-control" id="pagesbook" name="pagesbook">
+            </div>
+            <div class="mb-3">
+                <label for="isbnbook" class="form-label">ISBN</label>
+                <input type="text" class="form-control" id="isbnbook" name="isbnbook">
+            </div>
+            <div class="mb-3">
+                <label for="editionbook" class="form-label">Edicion</label>
+                <input type="text" class="form-control" id="editionbook" name="editionbook">
+            </div>
+            <div class="mb-3">
+                <label for="numpiecesbook" class="form-label">Numero de piezas</label>
+                <input type="text" class="form-control" id="numpiecesbook" name="numpiecesbook">
+            </div>
+            <div class="mb-3">
+                <label for="clasificationbook" class="form-label">Clasificacion</label>
+                <input type="text" class="form-control" id="clasificationbook" name="clasificationbook">
+            </div>
+            <div class="mb-3">
+                <label for="editorialbook" class="form-label">Editorial</label>
+                <input type="text" class="form-control" id="editorialbook" name="editorialbook">
+            </div>
+            <div class="mb-3">
+                <label for="placebook" class="form-label">Lugar</label>
+                <input type="text" class="form-control" id="placebook" name="placebook">
+            </div>
+            <div class="mb-3">
+                <label for="numseriebook" class="form-label">Numero de serie</label>
+                <input type="text" class="form-control" id="numseriebook" name="numseriebook">
+            </div>
+        </div>
+        <div class="section-right-form">
+
+        </div>
+        <button type="submit" class="btn btn-primary">Guardar</button>
+    </form>
     </div>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
         integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous">
@@ -75,6 +58,5 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/js/bootstrap.min.js"
         integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous">
     </script>
-</body>
-
-</html>
+    </body>
+@endsection
