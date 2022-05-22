@@ -19,4 +19,14 @@ class LendsController extends Controller
         $students = Student::all();
         return view('lends.newlend', compact('books','students'));
     }
+
+    public function getdatastudentlend (Request $request){
+        $data = Student::where('enrollment',$request['enrollment'])->get()->last();
+        // dd($data);
+        if($data == null){
+            return response()->json('null', 200);
+        }else{
+            return response()->json($data, 200);
+        }
+    }
 }

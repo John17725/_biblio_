@@ -11,7 +11,7 @@ require('./bootstrap');
 import Vue from 'vue';
 
 window.Vue = require('vue');
-
+window.axios = require('axios');
 // window.Vue = require('vue');
 
 // window.Vue.prototype.$http = window.axios;

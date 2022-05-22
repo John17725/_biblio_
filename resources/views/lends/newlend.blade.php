@@ -1,5 +1,10 @@
 @extends('layouts.app')
 <script {{ asset('resources/js/app.js') }} defer></script>
+<script>
+    window.routes = {
+        'getdatastudent' : '{{ route('prestamos.get.datastudent') }}',
+    }
+</script>
 @section('content')
 {{-- <div> --}}
     <div id='app'>

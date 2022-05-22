@@ -31,3 +31,4 @@ Route::post('/saveStudent', [StudentController::class, 'store'])->name('estudian
 
 Route::get('prestamos/', [LendsController::class, 'index'])->name('prestamos.index');
 Route::get('realizar-prestamo/', [LendsController::class, 'registerlend'])->name('prestamos.new');
+Route::get('/getStudentDataLend', [LendsController::class, 'getdatastudentlend'])->name('prestamos.get.datastudent');
