@@ -8,7 +8,7 @@
 a{
     text-decoration: none;
     box-shadow: none;
-    color: rgb(255, 255, 255);
+    color: #000000;
 }
 
 .section-left-form{
@@ -26,3 +26,7 @@ a{
     justify-content: center;
     /* align-items: center; */
 }
+/* 
+nav ul {
+    color: #000000;
+} */

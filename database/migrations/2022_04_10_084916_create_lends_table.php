@@ -17,9 +17,8 @@ class CreateLendsTable extends Migration
             $table->id();
             $table->unsignedBigInteger('student_id');
             $table->unsignedBigInteger('book_id');
-            $table->dateTime('end_date');
+            $table->dateTime('end_date')->nullable();
             $table->timestamps();
-
             $table->foreign('student_id')->references('id')->on('students');
             $table->foreign('book_id')->references('id')->on('books');
         });
