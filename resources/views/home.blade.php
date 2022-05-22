@@ -1,23 +1,25 @@
 @extends('layouts.app')
-
 @section('content')
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">{{ __('Dashboard') }}</div>
-
-                <div class="card-body">
-                    @if (session('status'))
-                        <div class="alert alert-success" role="alert">
-                            {{ session('status') }}
-                        </div>
-                    @endif
-
-                    {{ __('You are logged in!') }}
-                </div>
-            </div>
-        </div>
-    </div>
+<div>
+    <ul class="nav justify-content-center">
+        <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="{{ route('libros.index') }}">Listar libros</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="{{ route('libros.new') }}">Nuevo libro</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="{{ route('estudiante.index') }}">Listar Estudiantes</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="{{ route('estudiante.new') }}">Nuevo estudiante</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="{{ route('prestamos.index') }}">Listar Prestamos</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="{{ route('prestamos.new') }}">Nuevo Prestamos</a>
+        </li>
+    </ul>
 </div>
 @endsection
