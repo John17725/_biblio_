@@ -1,7 +1,14 @@
 @extends('layouts.app')
-
 @section('content')
-    <div class="container">
+    <div class="container-buttons-home">
+        <button class="btn btn-success btn-md"><a href="{{ route('libros.index') }}">LISTAR LIBROS</a></button>
+        <button class="btn btn-success btn-md"><a href="{{ route('libros.new') }}">NUEVO LIBRO</a></button>
+        <button class="btn btn-success btn-md"><a href="{{ route('estudiante.index') }}">LISTAR ALUMNOS</a></button>
+        <button class="btn btn-success btn-md"><a href="{{ route('estudiante.new') }}">NUEVO ALUMNO</a></button>
+        <button class="btn btn-success btn-md"><a href="{{ route('prestamos.index') }}">LISTAR PRESTAMOS</a></button>
+        {{-- <button class="btn btn-success btn-md"><a href="{{ route('home') }}"></a></button> --}}
+    </div>
+    {{-- <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-8">
                 <div class="card">
@@ -19,5 +26,5 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> --}}
 @endsection

@@ -17,11 +17,19 @@ use App\Http\Controllers\LendsController;
 
 Auth::routes();
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-// Route::get('/', [BookController::class,'home']);
+Route::get('/', [BookController::class,'home']);
 
-Route::get('libros/', [BookController::class,'index']);
-Route::get('usuarios/', [StudentController::class, 'index']);
-Route::get('prestamos/', [LendsController::class, 'index']);
-Route::get('registrar-libro/', [BookController::class,'RegisterrBook']);
-Route::post('/saveBook', [BookController::class,'saveBook']);
+Route::get('libros/', [BookController::class,'index'])->name('libros.index');
+Route::get('registrar-libro/', [BookController::class,'RegisterrBook'])->name('libros.new');
+Route::post('/saveBook', [BookController::class,'saveBook'])->name('libro.save');
+
+
+Route::get('estudiante/', [StudentController::class, 'index'])->name('estudiante.index');
+Route::get('registrar-estudiante/', [StudentController::class, 'registerstudent'])->name('estudiante.new');
+Route::post('/saveStudent', [StudentController::class, 'store'])->name('estudiante.save');
+
+
+Route::get('prestamos/', [LendsController::class, 'index'])->name('prestamos.index');
+
+
 
