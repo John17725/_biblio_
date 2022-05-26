@@ -24,7 +24,7 @@ class CreateBooksTable extends Migration
             $table->string('clasification');
             $table->string('editorial');
             $table->string('place');
-            $table->bigInteger('serialnumber');
+            $table->bigInteger('serialnumber')->nullable();
             $table->timestamps();
         });
     }
