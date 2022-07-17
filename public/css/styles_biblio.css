@@ -14,7 +14,7 @@ a{
 .container-cards{
     /* width: 100%;
     height: 100%; */
-    background: red;
+    background: blue;
     display: flex;
     /* flex-direction: row-reverse; */
     justify-content: center;
@@ -43,6 +43,11 @@ a{
     display: flex;
     justify-content: center;
     /* align-items: center; */
+}
+#hola-mundo{
+    width: 100px;
+    height: 100px;
+    background: red;
 }
 /* 
 nav ul {
