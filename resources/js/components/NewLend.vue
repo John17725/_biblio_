@@ -18,11 +18,13 @@
         Buscar
       </button>
     </div>
-    <div class="content-data-student" v-if="showformstudent">
+    <div class="content-data-student mt-2" v-if="showformstudent">
+      <h2>Alumno</h2>
       <form class="row g-3">
         <div class="col-md-6">
           <label for="inputEmail4" class="form-label">Nombre</label>
           <input
+            readonly
             type="text"
             class="form-control"
             id="inputEmail4"
@@ -32,6 +34,7 @@
         <div class="col-md-6">
           <label for="inputPassword4" class="form-label">Matricula</label>
           <input
+            readonly
             type="text"
             class="form-control"
             id="inputPassword4"
@@ -41,6 +44,7 @@
         <div class="col-md-2">
           <label for="inputEmail4" class="form-label">Grado</label>
           <input
+            readonly
             type="text"
             class="form-control"
             id="inputEmail4"
@@ -50,6 +54,7 @@
         <div class="col-md-2">
           <label for="inputPassword4" class="form-label">Grupo</label>
           <input
+            readonly
             type="text"
             class="form-control"
             id="inputPassword4"
@@ -59,6 +64,7 @@
         <div class="col-md-8">
           <label for="inputCity" class="form-label">Carrera</label>
           <input
+            readonly
             type="text"
             class="form-control"
             id="inputCity"
@@ -68,18 +74,84 @@
         <div class="col-md-6">
           <label for="inputEmail4" class="form-label">Curp</label>
           <input
+            readonly
             type="text"
             class="form-control"
             id="inputEmail4"
             :value="curp"
           />
         </div>
+        <button type="button" class="btn btn-info"  v-on:click="newLend">Generar prestamo de libro</button>
       </form>
+      <div class="col-md-" v-if="showfromNewLend">
+        <div class="input-group mb-1">
+          <input
+            type="text"
+            id="booktitle"
+            class="form-control"
+            placeholder="Ingrese titulo del libro"
+            aria-label="Recipient's username"
+            aria-describedby="button-addon2"
+          />
+          <button
+            class="btn btn-outline-secondary"
+            type="button"
+            id="button-search-student"
+            v-on:click="searchBook"
+          >
+            Buscar
+          </button>
+        </div>
+        <div class="list-group" v-if="showlistBooks">
+          <span class="list-group-item list-group-item-action mt-2" aria-current="true" v-for="book in books" v-on:click="lendGetBook(book)">{{book.title}} - Autor: {{book.author}} - {{book.pages}} Paginas</span>
+        </div>
+        <div class="list-group mt-3" v-if="showFromBook">
+          <h2>Detalles de libro a prestar</h2>
+          <form>
+            <div class="form-row">
+              <div class="form-group col-md-6">
+                <label for="inputEmail4">Titulo</label>
+                <input readonly type="text" class="form-control" id="inputEmail4" :value="bookLend.title">
+              </div>
+              <div class="form-group col-md-6">
+                <label for="inputPassword4">Autor</label>
+                <input readonly type="text" class="form-control" id="inputPassword4" :value="bookLend.author">
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="inputAddress">Paginas</label>
+              <input readonly type="text" class="form-control" id="inputAddress" :value="bookLend.pages">
+            </div>
+            <div class="form-group">
+              <label for="inputAddress2">ISB</label>
+              <input readonly type="text" class="form-control" id="inputAddress2" :value="bookLend.ISBN">
+            </div>
+            <div class="form-row">
+              <div class="form-group col-md-6">
+                <label for="inputCity">Edicion</label>
+                <input readonly type="text" class="form-control" id="inputCity" :value="bookLend.edition">
+              </div>
+              <div class="form-group col-md-4">
+                <label for="inputState">Editorial</label>
+                <input readonly type="text" class="form-control" id="inputCity" :value="bookLend.editorial">
+              </div>
+              <div class="form-group col-md-2">
+                <label for="inputZip">Numero de serie</label>
+                <input readonly type="text" class="form-control" id="inputZip" :value="bookLend.serialnumber">
+              </div>
+            </div>
+            <span  class="btn btn-success mt-2" v-on:click="finalizarPrestamo">Confirmar prestamo</span>
+          </form>
+        </div>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
+import Swal from 'sweetalert2/dist/sweetalert2.js'
+import 'sweetalert2/src/sweetalert2.scss'
+
 export default {
   data() {
     return {
@@ -89,7 +161,13 @@ export default {
       group: "",
       career: "",
       curp: "",
+      alumnoLend: {},
+      books: [],
+      bookLend: {},
       showformstudent: false,
+      showfromNewLend: false,
+      showlistBooks: true,
+      showFromBook: false
     };
   },
   methods: {
@@ -99,9 +177,65 @@ export default {
       // console.log(enrollmentStudent);
       this.getStudentData(enrollmentStudent);
     },
+    async searchBook(){
+      const booktitle = document.getElementById("booktitle").value;
+      console.log(booktitle);
+      this.getBookData(booktitle)
+    },
+    lendGetBook(book){
+      this.showlistBooks = false;
+      console.log('Libro a prestar',book);
+      this.bookLend = book;
+      this.showFromBook = true;
+    },
+    newLend(){
+      this.showfromNewLend = true;
+    },
+    getBookData(titleBook){
+      let getdataBook = window.routes.getbookdatalend;
+      axios.get(getdataBook, {
+        params: {
+          title: titleBook,
+        },
+      })
+      .then((res) => {
+        console.log(res.data)
+        if(res.data === "null"){
+          Swal.fire('No se hallaron libros')
+        }else{
+          this.books = res.data;
+        }
+      });
+    },
+    async finalizarPrestamo(){
+      console.log('Datos alumno que realiza prestamo:', this.alumnoLend.id);
+      console.log('Datos libro a prestar:', this.bookLend.id);
+      this.postDataLend(this.alumnoLend.id,this.bookLend.id);
+    },
+    postDataLend(_idAlumno, _idBook){
+      let postnewlend = window.routes.postnewlend;
+      axios.post(postnewlend, {
+        idAlumno: _idAlumno,
+        idBook: _idBook
+      })
+      .then( (response) => {
+        console.log(response);
+        Swal.fire({
+          title: response.data.message+' Folio: '+response.data.folio,
+          confirmButtonText: 'Ok',
+        }).then((result) => {
+          if (result.isConfirmed) {
+            window.location.reload()
+          }
+        })
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+    },
     getStudentData(enrollmentStudent) {
       let getdatastudent = window.routes.getdatastudent;
-      console.log(getdatastudent);
+      // console.log(getdatastudent);
       axios
         .get(getdatastudent, {
           params: {
@@ -109,11 +243,13 @@ export default {
           },
         })
         .then((res) => {
-          console.log(JSON.stringify(res.data));
+          // console.log(JSON.stringify(res.data));
           this.responseStudent = res.data;
-          if (this.responseStudent == "null") {
+          if (res.data == "null") {
             this.showformstudent = false;
+            Swal.fire('No se encontro al Alumno')
           } else {
+            this.alumnoLend = res.data;
             this.showformstudent = true;
             this.name = res.data.name + " " + res.data.last_name;
             this.enrollment = res.data.enrollment;
@@ -127,7 +263,7 @@ export default {
     },
   },
   created() {
-    console.log("Component mounted.");
+    // console.log("Component mounteadasdasdsdsdadasdad.");
   },
 };
 </script>

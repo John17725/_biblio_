@@ -9,9 +9,11 @@ require('./bootstrap');
 
 
 import Vue from 'vue';
+import VueSweetalert2 from 'vue-sweetalert2';
 
 window.Vue = require('vue');
 window.axios = require('axios');
+Vue.use(VueSweetalert2);
 // window.Vue = require('vue');
 
 // window.Vue.prototype.$http = window.axios;

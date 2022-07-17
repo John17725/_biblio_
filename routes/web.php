@@ -32,3 +32,10 @@ Route::post('/saveStudent', [StudentController::class, 'store'])->name('estudian
 Route::get('prestamos/', [LendsController::class, 'index'])->name('prestamos.index');
 Route::get('realizar-prestamo/', [LendsController::class, 'registerlend'])->name('prestamos.new');
 Route::get('/getStudentDataLend', [LendsController::class, 'getdatastudentlend'])->name('prestamos.get.datastudent');
+
+Route::get('/getBookDataLend', [LendsController::class, 'getbookdatalend'])->name('prestamos.get.databook');
+Route::post('/newLend', [LendsController::class, 'storenewlend'])->name('prestamos.new.lend');
+Route::get('devolver-libro/{id}', [LendsController::class, 'returnBook'])->name('prestamos.return.lend');
+
+Route::post('/buscar-prestamo', [LendsController::class, 'findlend'])->name('prestamos.find.lend');
+

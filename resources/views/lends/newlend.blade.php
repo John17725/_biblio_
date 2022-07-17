@@ -3,6 +3,8 @@
 <script>
     window.routes = {
         'getdatastudent' : '{{ route('prestamos.get.datastudent') }}',
+        'getbookdatalend' : '{{ route('prestamos.get.databook') }}',
+        'postnewlend' : '{{ route('prestamos.new.lend') }}',
     }
 </script>
 @section('content')
