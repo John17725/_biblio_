@@ -6,7 +6,7 @@
             <div class="input-group mb-3">
                 <input type="number" class="form-control" placeholder="Buscar por Folio"  name="folio" aria-describedby="button-addon2">
                 <div class="input-group-append">
-                    <button class="btn btn-outline-secondary" type="submit" id="button-addon2">Button</button>
+                    <button class="btn btn-outline-secondary" type="submit" id="button-addon2">Buscar</button>
                 </div>
             </div>
         </form>
@@ -25,27 +25,42 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach ($lends as $key => $item)
-                    <tr>
-                        <th scope="row">{{ $item->id }}</th>
-                        <td>{{ $item->student->name }} {{ $item->student->last_name }}</td>
-                        <td>{{ $item->book->title }}</td>
-                        {{-- <td>{{ $item->end_date }}</td> --}}
-                        <td>{{ \Carbon\Carbon::parse($item->created_at)->isoFormat('dddd D \d\e MMMM \d\e\l Y') }}</td>
-                        @if ($item->end_date === null)
-                            <td>Este libro no ha sido devuelto</td>
-                            <td><a href="{{route('prestamos.return.lend', $item->id)}}" class="btn btn-warning">Devolver</a></td>
-                        @else
-                            <td>{{ \Carbon\Carbon::parse($item->end_date)->isoFormat('dddd D \d\e MMMM \d\e\l Y') }}</td>
-                        @endif
-                    </tr>
-                @endforeach
+                @if (isset($search))
+                    <th>{{$lend->id}}</th>
+                    <th>{{$lend->student->name}} {{ $lend->student->last_name }}</th>
+                    <th>{{$lend->book->title}}  ISBN: {{ $lend->book->ISBN }}</th>
+                    <th>{{ \Carbon\Carbon::parse($lend->created_at)->isoFormat('dddd D \d\e MMMM \d\e\l Y') }}</th>
+                    @if ($lend->end_date === null)
+                        <td>Este libro no ha sido devuelto</td>
+                        <td><a href="{{route('prestamos.return.lend', $lend->id)}}" class="btn btn-warning">Devolver</a></td>
+                    @else
+                        <td>{{ \Carbon\Carbon::parse($lend->end_date)->isoFormat('dddd D \d\e MMMM \d\e\l Y') }}</td>
+                    @endif
+                @else
+                    @foreach ($lends as $key => $item)
+                        <tr>
+                            <th scope="row">{{ $item->id }}</th>
+                            <td>{{ $item->student->name }} {{ $item->student->last_name }}</td>
+                            <td>{{ $item->book->title }} ISBN: {{ $item->book->ISBN }}</td>
+                            {{-- <td>{{ $item->end_date }}</td> --}}
+                            <td>{{ \Carbon\Carbon::parse($item->created_at)->isoFormat('dddd D \d\e MMMM \d\e\l Y') }}</td>
+                            @if ($item->end_date === null)
+                                <td>Este libro no ha sido devuelto</td>
+                                <td><a href="{{route('prestamos.return.lend', $item->id)}}" class="btn btn-warning">Devolver</a></td>
+                            @else
+                                <td>{{ \Carbon\Carbon::parse($item->end_date)->isoFormat('dddd D \d\e MMMM \d\e\l Y') }}</td>
+                            @endif
+                        </tr>
+                    @endforeach
+                @endif
             </tbody>
         </table>
         <nav aria-label="Page navigation example">
-            <ul class="pagination justify-content-center">
-                {{ $lends->links() }}
-            </ul>
+            @if (isset($lends))
+                <ul class="pagination justify-content-center">
+                    {{ $lends->links() }}
+                </ul>
+            @endif
         </nav>
     </div>
 @endsection

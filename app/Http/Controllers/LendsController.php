@@ -52,6 +52,7 @@ class LendsController extends Controller
                 $lend->save();
                 DB::commit();
                 $response = [
+                    'status' => 'success',
                     'message' => 'Prestamo exitoso',
                     'folio' => $lend->id,
                 ];
@@ -60,7 +61,11 @@ class LendsController extends Controller
                 return response()->json('Ha ocurrido un error al realizar el prestamo',200);    
             }
         }else{
-            return response()->json('No hay piezas disponibles para prestamos',200);
+            $response = [
+                'status' => 'error',
+                'message' => 'No hay piezas disponibles para prestamos'
+            ];
+            return response()->json($response,200);
         }
     }
 
@@ -70,7 +75,10 @@ class LendsController extends Controller
     }
 
     public function findlend(Request $request){
-        $lends = collect(Lends::find($request->folio));
-        return view('lends.index', compact('lends'));
+        $search = true;
+        $lend = Lends::find($request->folio);
+        return view('lends.index', compact('lend','search'));
     }
+
+    
 }

@@ -20,6 +20,7 @@ class StudentController extends Controller
     }
 
     public function store(Request $request){
+        // dd($request);
         DB::beginTransaction();
         try{
             $student = new Student();
@@ -32,6 +33,7 @@ class StudentController extends Controller
             $student->grade = $request['grade'];
             $student->group = $request['group'];
             $student->curp = $request['curp'];
+            $student->gender = $request['gender'];
             $student->save();
             DB::commit();
             return redirect()->route('estudiante.index');

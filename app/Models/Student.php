@@ -17,7 +17,8 @@ class Student extends Model
         'career',
         'grade',
         'group',
-        'curp'
+        'curp',
+        'gender',
     ];
     public function Book(){
         return $this->belongsTo(Book::class);

@@ -20,9 +20,12 @@
         <li class="nav-item">
             <a class="nav-link active" aria-current="page" href="{{ route('prestamos.new') }}">Nuevo Prestamos</a>
         </li>
+        <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="{{ route('biblio.stats') }}">Estadisticas de asistencia anual</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="{{ route('biblio.assistance.new') }}">Registro de asistencia</a>
+        </li>
     </ul>
-    <div id="hola-mundo">
-        <h1>aaa</h1>
-    </div>
 </div>
 @endsection

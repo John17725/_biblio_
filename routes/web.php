@@ -4,6 +4,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BookController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\LendsController;
+use App\Http\Controllers\StatsController;
+use App\Http\Controllers\AssistanceController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -38,4 +40,11 @@ Route::post('/newLend', [LendsController::class, 'storenewlend'])->name('prestam
 Route::get('devolver-libro/{id}', [LendsController::class, 'returnBook'])->name('prestamos.return.lend');
 
 Route::post('/buscar-prestamo', [LendsController::class, 'findlend'])->name('prestamos.find.lend');
+
+Route::get('estadisticas', [StatsController::class, 'stats'])->name('biblio.stats');
+
+Route::get('estadisticas-year/{year}', [StatsController::class, 'getDataYear'])->name('biblio.stats.year');
+
+
+Route::get('registrar-asistencia/', [AssistanceController::class, 'index'])->name('biblio.assistance.new');
 

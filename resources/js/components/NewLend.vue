@@ -103,7 +103,11 @@
           </button>
         </div>
         <div class="list-group" v-if="showlistBooks">
-          <span class="list-group-item list-group-item-action mt-2" aria-current="true" v-for="book in books" v-on:click="lendGetBook(book)">{{book.title}} - Autor: {{book.author}} - {{book.pages}} Paginas</span>
+          <span class="list-group-item list-group-item-action mt-2" 
+          readonly
+          aria-current="true" 
+          v-for="book in books" 
+          v-on:click="lendGetBook(book)">{{book.title}} - Autor: {{book.author}} - {{book.pages}} Paginas - {{book.pieces}} piezas disponibles</span>
         </div>
         <div class="list-group mt-3" v-if="showFromBook">
           <h2>Detalles de libro a prestar</h2>
@@ -220,14 +224,25 @@ export default {
       })
       .then( (response) => {
         console.log(response);
-        Swal.fire({
-          title: response.data.message+' Folio: '+response.data.folio,
-          confirmButtonText: 'Ok',
-        }).then((result) => {
-          if (result.isConfirmed) {
-            window.location.reload()
-          }
-        })
+        if(response.data.status === 'success'){
+          Swal.fire({
+            title: response.data.message+' Folio: '+response.data.folio,
+            confirmButtonText: 'Ok',
+          }).then((result) => {
+            if (result.isConfirmed) {
+              window.location.reload()
+            }
+          })
+        }else{
+          Swal.fire({
+            title: response.data.message,
+            confirmButtonText: 'Ok',
+          }).then((result) => {
+            if (result.isConfirmed) {
+              window.location.reload()
+            }
+          })
+        }
       })
       .catch(function (error) {
         console.log(error);

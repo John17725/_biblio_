@@ -37,6 +37,19 @@
                     <label for="curp" class="form-label">CURP</label>
                     <input type="text" class="form-control" id="curp" name="curp">
                 </div>
+                <div class="mb-2">
+                    <label for="curp" class="form-label">Genero</label>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                          <label class="input-group-text" for="inputGroupSelect01">Opciones</label>
+                        </div>
+                        <select class="custom-select" id="inputGroupSelect01" name='gender'>
+                          <option selected>Seleccione una opcion</option>
+                          <option value="Masculino">Masculino</option>
+                          <option value="Femenino">Femenino</option>
+                        </select>
+                      </div>
+                </div>
             </div>
         </div>
         <div class="button-form">
