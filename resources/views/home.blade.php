@@ -21,5 +21,8 @@
             <a class="nav-link active" aria-current="page" href="{{ route('prestamos.new') }}">Nuevo Prestamos</a>
         </li>
     </ul>
+    <div id="hola-mundo">
+        <h1>aaa</h1>
+    </div>
 </div>
 @endsection
