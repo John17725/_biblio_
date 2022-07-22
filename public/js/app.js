@@ -5442,6 +5442,16 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
@@ -5459,7 +5469,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       showformstudent: false,
       showfromNewLend: false,
       showlistBooks: true,
-      showFromBook: false
+      showFromBook: false,
+      showlistBookslend: false,
+      listbooklend: [],
+      primary: true
     };
   },
   methods: {
@@ -5493,12 +5506,13 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           while (1) {
             switch (_context2.prev = _context2.next) {
               case 0:
+                _this2.showlistBooks = true;
                 booktitle = document.getElementById("booktitle").value;
                 console.log(booktitle);
 
                 _this2.getBookData(booktitle);
 
-              case 3:
+              case 4:
               case "end":
                 return _context2.stop();
             }
@@ -5507,10 +5521,14 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       }))();
     },
     lendGetBook: function lendGetBook(book) {
-      this.showlistBooks = false;
-      console.log('Libro a prestar', book);
-      this.bookLend = book;
-      this.showFromBook = true;
+      if (book.pieces == 0) {
+        sweetalert2_dist_sweetalert2_js__WEBPACK_IMPORTED_MODULE_1___default().fire('No hay existencias para prestamos');
+      } else {
+        this.showlistBooks = false;
+        console.log('Libro a prestar', book);
+        this.bookLend = book;
+        this.showFromBook = true;
+      }
     },
     newLend: function newLend() {
       this.showfromNewLend = true;
@@ -5533,7 +5551,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         }
       });
     },
-    finalizarPrestamo: function finalizarPrestamo() {
+    agregarotrolibro: function agregarotrolibro() {
       var _this4 = this;
 
       return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee3() {
@@ -5541,18 +5559,82 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           while (1) {
             switch (_context3.prev = _context3.next) {
               case 0:
+                _this4.primary = false;
+                _this4.showlistBookslend = true;
                 console.log('Datos alumno que realiza prestamo:', _this4.alumnoLend.id);
                 console.log('Datos libro a prestar:', _this4.bookLend.id);
 
-                _this4.postDataLend(_this4.alumnoLend.id, _this4.bookLend.id);
+                _this4.listbooklend.push(_this4.bookLend);
 
-              case 3:
+                console.log(_this4.listbooklend);
+
+              case 6:
               case "end":
                 return _context3.stop();
             }
           }
         }, _callee3);
       }))();
+    },
+    finalizarPrestamogrupo: function finalizarPrestamogrupo() {
+      var _this5 = this;
+
+      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee4() {
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee4$(_context4) {
+          while (1) {
+            switch (_context4.prev = _context4.next) {
+              case 0:
+                console.log('Datos alumno que realiza prestamo:', _this5.alumnoLend.id);
+                console.log('Datos libros a prestar:', _this5.listbooklend);
+
+                _this5.postDataLends(_this5.alumnoLend.id, _this5.listbooklend);
+
+              case 3:
+              case "end":
+                return _context4.stop();
+            }
+          }
+        }, _callee4);
+      }))();
+    },
+    finalizarPrestamo: function finalizarPrestamo() {
+      var _this6 = this;
+
+      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee5() {
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee5$(_context5) {
+          while (1) {
+            switch (_context5.prev = _context5.next) {
+              case 0:
+                console.log('Datos alumno que realiza prestamo:', _this6.alumnoLend.id);
+                console.log('Datos libro a prestar:', _this6.bookLend.id);
+
+                _this6.postDataLend(_this6.alumnoLend.id, _this6.bookLend.id);
+
+              case 3:
+              case "end":
+                return _context5.stop();
+            }
+          }
+        }, _callee5);
+      }))();
+    },
+    postDataLends: function postDataLends(_idAlumno, _idBooks) {
+      var postnewlends = window.routes.postnewlends;
+      axios.post(postnewlends, {
+        idAlumno: _idAlumno,
+        idBook: _idBooks
+      }).then(function (response) {
+        sweetalert2_dist_sweetalert2_js__WEBPACK_IMPORTED_MODULE_1___default().fire({
+          title: response.data.message + ' Folios: ' + response.data.folios,
+          confirmButtonText: 'Ok'
+        }).then(function (result) {
+          if (result.isConfirmed) {
+            window.location.reload();
+          }
+        });
+      })["catch"](function (error) {
+        console.log(error);
+      });
     },
     postDataLend: function postDataLend(_idAlumno, _idBook) {
       var postnewlend = window.routes.postnewlend;
@@ -5586,7 +5668,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       });
     },
     getStudentData: function getStudentData(enrollmentStudent) {
-      var _this5 = this;
+      var _this7 = this;
 
       var getdatastudent = window.routes.getdatastudent; // console.log(getdatastudent);
 
@@ -5596,20 +5678,20 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         }
       }).then(function (res) {
         // console.log(JSON.stringify(res.data));
-        _this5.responseStudent = res.data;
+        _this7.responseStudent = res.data;
 
         if (res.data == "null") {
-          _this5.showformstudent = false;
+          _this7.showformstudent = false;
           sweetalert2_dist_sweetalert2_js__WEBPACK_IMPORTED_MODULE_1___default().fire('No se encontro al Alumno');
         } else {
-          _this5.alumnoLend = res.data;
-          _this5.showformstudent = true;
-          _this5.name = res.data.name + " " + res.data.last_name;
-          _this5.enrollment = res.data.enrollment;
-          _this5.grade = res.data.grade;
-          _this5.group = res.data.group;
-          _this5.career = res.data.career;
-          _this5.curp = res.data.CURP;
+          _this7.alumnoLend = res.data;
+          _this7.showformstudent = true;
+          _this7.name = res.data.name + " " + res.data.last_name;
+          _this7.enrollment = res.data.enrollment;
+          _this7.grade = res.data.grade;
+          _this7.group = res.data.group;
+          _this7.career = res.data.career;
+          _this7.curp = res.data.CURP;
         }
       }); // console.log("Hola mundo",enrollmentStudent);
     }
@@ -5620,10 +5702,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
 /***/ }),
 
-/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Stats.vue?vue&type=script&lang=js&":
-/*!************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Stats.vue?vue&type=script&lang=js& ***!
-  \************************************************************************************************************************************************************************************************************/
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/SearcherBook.vue?vue&type=script&lang=js&":
+/*!*******************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/SearcherBook.vue?vue&type=script&lang=js& ***!
+  \*******************************************************************************************************************************************************************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -5633,6 +5715,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
 /* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var sweetalert2_dist_sweetalert2_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! sweetalert2/dist/sweetalert2.js */ "./node_modules/sweetalert2/dist/sweetalert2.js");
+/* harmony import */ var sweetalert2_dist_sweetalert2_js__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(sweetalert2_dist_sweetalert2_js__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var sweetalert2_src_sweetalert2_scss__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! sweetalert2/src/sweetalert2.scss */ "./node_modules/sweetalert2/src/sweetalert2.scss");
 
 
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
@@ -5669,31 +5754,161 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
-      showTables: false
+      showDetailBook: true,
+      titleSearch: "",
+      books: [],
+      book: {},
+      showlistBooks: true,
+      showFromBook: false
     };
   },
   methods: {
-    searchyearData: function searchyearData(year) {
+    getSearchTitle: function getSearchTitle() {
       var _this = this;
 
       return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee() {
+        var booktitle;
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
-                _this.showTables = true;
-                console.log("async search", year);
+                booktitle = document.getElementById("titlebuscar").value;
+                console.log('bbbb', booktitle);
 
-              case 2:
+                _this.gettitles(booktitle);
+
+              case 3:
               case "end":
                 return _context.stop();
             }
           }
         }, _callee);
       }))();
+    },
+    getSearchAuthor: function getSearchAuthor() {
+      var _this2 = this;
+
+      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee2() {
+        var author;
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee2$(_context2) {
+          while (1) {
+            switch (_context2.prev = _context2.next) {
+              case 0:
+                author = document.getElementById("authorbuscar").value;
+                console.log('aaaaa', author);
+
+                _this2.getauthors(author);
+
+              case 3:
+              case "end":
+                return _context2.stop();
+            }
+          }
+        }, _callee2);
+      }))();
+    },
+    gettitles: function gettitles(_title) {
+      var _this3 = this;
+
+      var getdata = window.routes.getbookdata;
+      axios.post(getdata, {
+        title: _title
+      }).then(function (response) {
+        _this3.books = response.data.data; // console.log(response.data.data)
+      });
+    },
+    getauthors: function getauthors(_author) {
+      var _this4 = this;
+
+      var getdata = window.routes.getbookdata;
+      axios.post(getdata, {
+        author: _author
+      }).then(function (response) {
+        _this4.books = response.data.data;
+        console.log(response.data.data);
+      });
+    },
+    lendGetBook: function lendGetBook(book) {
+      this.showFromBook = true;
+      console.log('Libro a prestar', book);
+      this.book = book;
     }
   }
 });
@@ -5737,7 +5952,7 @@ vue__WEBPACK_IMPORTED_MODULE_1__["default"].use((vue_sweetalert2__WEBPACK_IMPORT
 // Vue.component('example-component', require('./components/ExampleComponent.vue').default);
 
 vue__WEBPACK_IMPORTED_MODULE_1__["default"].component('new-lend', (__webpack_require__(/*! ./components/NewLend.vue */ "./resources/js/components/NewLend.vue")["default"]));
-vue__WEBPACK_IMPORTED_MODULE_1__["default"].component('stats-component', (__webpack_require__(/*! ./components/Stats.vue */ "./resources/js/components/Stats.vue")["default"]));
+vue__WEBPACK_IMPORTED_MODULE_1__["default"].component('searche-book', (__webpack_require__(/*! ./components/SearcherBook.vue */ "./resources/js/components/SearcherBook.vue")["default"]));
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
@@ -33498,10 +33713,10 @@ component.options.__file = "resources/js/components/NewLend.vue"
 
 /***/ }),
 
-/***/ "./resources/js/components/Stats.vue":
-/*!*******************************************!*\
-  !*** ./resources/js/components/Stats.vue ***!
-  \*******************************************/
+/***/ "./resources/js/components/SearcherBook.vue":
+/*!**************************************************!*\
+  !*** ./resources/js/components/SearcherBook.vue ***!
+  \**************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -33509,8 +33724,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var _Stats_vue_vue_type_template_id_56c7d5c4___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Stats.vue?vue&type=template&id=56c7d5c4& */ "./resources/js/components/Stats.vue?vue&type=template&id=56c7d5c4&");
-/* harmony import */ var _Stats_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Stats.vue?vue&type=script&lang=js& */ "./resources/js/components/Stats.vue?vue&type=script&lang=js&");
+/* harmony import */ var _SearcherBook_vue_vue_type_template_id_57aaf9c9___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./SearcherBook.vue?vue&type=template&id=57aaf9c9& */ "./resources/js/components/SearcherBook.vue?vue&type=template&id=57aaf9c9&");
+/* harmony import */ var _SearcherBook_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./SearcherBook.vue?vue&type=script&lang=js& */ "./resources/js/components/SearcherBook.vue?vue&type=script&lang=js&");
 /* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! !../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
 
 
@@ -33520,9 +33735,9 @@ __webpack_require__.r(__webpack_exports__);
 /* normalize component */
 ;
 var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
-  _Stats_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
-  _Stats_vue_vue_type_template_id_56c7d5c4___WEBPACK_IMPORTED_MODULE_0__.render,
-  _Stats_vue_vue_type_template_id_56c7d5c4___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
+  _SearcherBook_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _SearcherBook_vue_vue_type_template_id_57aaf9c9___WEBPACK_IMPORTED_MODULE_0__.render,
+  _SearcherBook_vue_vue_type_template_id_57aaf9c9___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
   false,
   null,
   null,
@@ -33532,7 +33747,7 @@ var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__
 
 /* hot reload */
 if (false) { var api; }
-component.options.__file = "resources/js/components/Stats.vue"
+component.options.__file = "resources/js/components/SearcherBook.vue"
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (component.exports);
 
 /***/ }),
@@ -33553,10 +33768,10 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./resources/js/components/Stats.vue?vue&type=script&lang=js&":
-/*!********************************************************************!*\
-  !*** ./resources/js/components/Stats.vue?vue&type=script&lang=js& ***!
-  \********************************************************************/
+/***/ "./resources/js/components/SearcherBook.vue?vue&type=script&lang=js&":
+/*!***************************************************************************!*\
+  !*** ./resources/js/components/SearcherBook.vue?vue&type=script&lang=js& ***!
+  \***************************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -33564,8 +33779,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Stats_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./Stats.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Stats.vue?vue&type=script&lang=js&");
- /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Stats_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_SearcherBook_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./SearcherBook.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/SearcherBook.vue?vue&type=script&lang=js&");
+ /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_SearcherBook_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
 
 /***/ }),
 
@@ -33599,19 +33814,19 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./resources/js/components/Stats.vue?vue&type=template&id=56c7d5c4&":
-/*!**************************************************************************!*\
-  !*** ./resources/js/components/Stats.vue?vue&type=template&id=56c7d5c4& ***!
-  \**************************************************************************/
+/***/ "./resources/js/components/SearcherBook.vue?vue&type=template&id=57aaf9c9&":
+/*!*********************************************************************************!*\
+  !*** ./resources/js/components/SearcherBook.vue?vue&type=template&id=57aaf9c9& ***!
+  \*********************************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "render": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Stats_vue_vue_type_template_id_56c7d5c4___WEBPACK_IMPORTED_MODULE_0__.render),
-/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Stats_vue_vue_type_template_id_56c7d5c4___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
+/* harmony export */   "render": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_SearcherBook_vue_vue_type_template_id_57aaf9c9___WEBPACK_IMPORTED_MODULE_0__.render),
+/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_SearcherBook_vue_vue_type_template_id_57aaf9c9___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
 /* harmony export */ });
-/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Stats_vue_vue_type_template_id_56c7d5c4___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./Stats.vue?vue&type=template&id=56c7d5c4& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Stats.vue?vue&type=template&id=56c7d5c4&");
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_SearcherBook_vue_vue_type_template_id_57aaf9c9___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./SearcherBook.vue?vue&type=template&id=57aaf9c9& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/SearcherBook.vue?vue&type=template&id=57aaf9c9&");
 
 
 /***/ }),
@@ -33940,15 +34155,69 @@ var render = function () {
                         _c(
                           "span",
                           {
-                            staticClass: "btn btn-success mt-2",
-                            on: { click: _vm.finalizarPrestamo },
+                            staticClass: "btn btn-primary mt-2",
+                            on: { click: _vm.agregarotrolibro },
                           },
-                          [_vm._v("Confirmar prestamo")]
+                          [_vm._v("Agregar otro libro")]
                         ),
+                        _vm._v(" "),
+                        _vm.primary
+                          ? _c(
+                              "span",
+                              {
+                                staticClass: "btn btn-success mt-2",
+                                on: { click: _vm.finalizarPrestamo },
+                              },
+                              [_vm._v("Confirmar prestamo")]
+                            )
+                          : _vm._e(),
                       ]),
                     ])
                   : _vm._e(),
               ])
+            : _vm._e(),
+          _vm._v(" "),
+          _vm.showlistBookslend
+            ? _c(
+                "div",
+                { staticClass: "list-group" },
+                [
+                  _c("h2", [_vm._v("Lista de libros a prestar")]),
+                  _vm._v(" "),
+                  _vm._l(_vm.listbooklend, function (book) {
+                    return _c(
+                      "span",
+                      {
+                        staticClass:
+                          "list-group-item list-group-item-action mt-2",
+                        attrs: { readonly: "", "aria-current": "true" },
+                      },
+                      [
+                        _vm._v(
+                          _vm._s(book.title) +
+                            " - Autor: " +
+                            _vm._s(book.author) +
+                            " - " +
+                            _vm._s(book.pages) +
+                            " Paginas - " +
+                            _vm._s(book.pieces) +
+                            " piezas disponibles"
+                        ),
+                      ]
+                    )
+                  }),
+                  _vm._v(" "),
+                  _c(
+                    "span",
+                    {
+                      staticClass: "btn btn-success mt-2",
+                      on: { click: _vm.finalizarPrestamogrupo },
+                    },
+                    [_vm._v("Confirmar prestamo")]
+                  ),
+                ],
+                2
+              )
             : _vm._e(),
         ])
       : _vm._e(),
@@ -33961,10 +34230,10 @@ render._withStripped = true
 
 /***/ }),
 
-/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Stats.vue?vue&type=template&id=56c7d5c4&":
-/*!*****************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Stats.vue?vue&type=template&id=56c7d5c4& ***!
-  \*****************************************************************************************************************************************************************************************************************/
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/SearcherBook.vue?vue&type=template&id=57aaf9c9&":
+/*!************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/SearcherBook.vue?vue&type=template&id=57aaf9c9& ***!
+  \************************************************************************************************************************************************************************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -33978,100 +34247,320 @@ var render = function () {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "container" }, [
-    _c(
-      "div",
-      {
-        staticClass: "btn-group",
-        attrs: { role: "group", "aria-label": "Basic example" },
-      },
-      [
+    _c("div", { staticClass: "input-group mb-3" }, [
+      _c("input", {
+        staticClass: "form-control",
+        attrs: {
+          type: "text",
+          id: "titlebuscar",
+          placeholder: "Busqueda por titulo de libro",
+          "aria-label": "Recipient's username",
+          "aria-describedby": "button-addon2",
+        },
+      }),
+      _vm._v(" "),
+      _c("div", { staticClass: "input-group-append" }, [
         _c(
           "button",
           {
-            staticClass: "btn btn-secondary",
-            attrs: { type: "button" },
-            on: {
-              click: function ($event) {
-                return _vm.searchyearData(2022)
-              },
-            },
+            staticClass: "btn btn-outline-secondary",
+            attrs: { type: "button", id: "button-addon2" },
+            on: { click: _vm.getSearchTitle },
           },
-          [_vm._v("2022")]
+          [_vm._v("Buscar")]
         ),
-        _vm._v(" "),
-        _c(
-          "button",
-          {
-            staticClass: "btn btn-secondary",
-            attrs: { type: "button" },
-            on: {
-              click: function ($event) {
-                return _vm.searchyearData(2023)
-              },
-            },
-          },
-          [_vm._v("2023")]
-        ),
-        _vm._v(" "),
-        _c(
-          "button",
-          {
-            staticClass: "btn btn-secondary",
-            attrs: { type: "button" },
-            on: {
-              click: function ($event) {
-                return _vm.searchyearData(2024)
-              },
-            },
-          },
-          [_vm._v("2024")]
-        ),
-      ]
-    ),
+      ]),
+    ]),
     _vm._v(" "),
-    _vm.showTables
-      ? _c("div", { staticClass: "container mt-2" }, [_vm._m(0)])
+    _c("div", { staticClass: "input-group mb-3 mt-2" }, [
+      _c("input", {
+        staticClass: "form-control",
+        attrs: {
+          type: "text",
+          id: "authorbuscar",
+          placeholder: "Busqueda por autor del libro",
+          "aria-label": "Recipient's username",
+          "aria-describedby": "button-addon2",
+        },
+      }),
+      _vm._v(" "),
+      _c("div", { staticClass: "input-group-append" }, [
+        _c(
+          "button",
+          {
+            staticClass: "btn btn-outline-secondary",
+            attrs: { type: "button", id: "button-addon2" },
+            on: { click: _vm.getSearchAuthor },
+          },
+          [_vm._v("Buscar")]
+        ),
+      ]),
+    ]),
+    _vm._v(" "),
+    _vm.showlistBooks
+      ? _c(
+          "div",
+          { staticClass: "list-group" },
+          _vm._l(_vm.books, function (book) {
+            return _c(
+              "span",
+              {
+                staticClass: "list-group-item list-group-item-action mt-2",
+                attrs: { readonly: "", "aria-current": "true" },
+                on: {
+                  click: function ($event) {
+                    return _vm.lendGetBook(book)
+                  },
+                },
+              },
+              [
+                _vm._v(
+                  _vm._s(book.title) +
+                    " - Autor: " +
+                    _vm._s(book.author) +
+                    " - " +
+                    _vm._s(book.pages) +
+                    " Paginas - " +
+                    _vm._s(book.pieces) +
+                    " piezas disponibles"
+                ),
+              ]
+            )
+          }),
+          0
+        )
+      : _vm._e(),
+    _vm._v(" "),
+    _vm.showFromBook
+      ? _c("div", { staticClass: "list-group mt-3" }, [
+          _c("h2", [_vm._v("Detalles del libro")]),
+          _vm._v(" "),
+          _c("form", [
+            _c("div", { staticClass: "form-row" }, [
+              _c("div", { staticClass: "form-group col-md-6" }, [
+                _c("label", { attrs: { for: "inputEmail4" } }, [
+                  _vm._v("Titulo"),
+                ]),
+                _vm._v(" "),
+                _c("input", {
+                  staticClass: "form-control",
+                  attrs: { readonly: "", type: "text", id: "inputEmail4" },
+                  domProps: { value: _vm.book.title },
+                }),
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "form-group col-md-6" }, [
+                _c("label", { attrs: { for: "inputPassword4" } }, [
+                  _vm._v("Autor"),
+                ]),
+                _vm._v(" "),
+                _c("input", {
+                  staticClass: "form-control",
+                  attrs: { readonly: "", type: "text", id: "inputPassword4" },
+                  domProps: { value: _vm.book.author },
+                }),
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "form-group col-md-6" }, [
+                _c("label", { attrs: { for: "inputCity" } }, [
+                  _vm._v("Capitulo 1"),
+                ]),
+                _vm._v(" "),
+                _c("input", {
+                  staticClass: "form-control",
+                  attrs: { readonly: "", type: "text", id: "inputCity" },
+                  domProps: { value: _vm.book.capitulo_1 },
+                }),
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "form-group col-md-6" }, [
+                _c("label", { attrs: { for: "inputCity" } }, [
+                  _vm._v("Capitulo 2"),
+                ]),
+                _vm._v(" "),
+                _c("input", {
+                  staticClass: "form-control",
+                  attrs: { readonly: "", type: "text", id: "inputCity" },
+                  domProps: { value: _vm.book.capitulo_2 },
+                }),
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "form-group col-md-6" }, [
+                _c("label", { attrs: { for: "inputCity" } }, [
+                  _vm._v("Capitulo 3"),
+                ]),
+                _vm._v(" "),
+                _c("input", {
+                  staticClass: "form-control",
+                  attrs: { readonly: "", type: "text", id: "inputCity" },
+                  domProps: { value: _vm.book.capitulo_3 },
+                }),
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "form-group col-md-6" }, [
+                _c("label", { attrs: { for: "inputCity" } }, [
+                  _vm._v("Capitulo 4"),
+                ]),
+                _vm._v(" "),
+                _c("input", {
+                  staticClass: "form-control",
+                  attrs: { readonly: "", type: "text", id: "inputCity" },
+                  domProps: { value: _vm.book.capitulo_4 },
+                }),
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "form-group col-md-6" }, [
+                _c("label", { attrs: { for: "inputCity" } }, [
+                  _vm._v("Capitulo 5"),
+                ]),
+                _vm._v(" "),
+                _c("input", {
+                  staticClass: "form-control",
+                  attrs: { readonly: "", type: "text", id: "inputCity" },
+                  domProps: { value: _vm.book.capitulo_5 },
+                }),
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "form-group col-md-6" }, [
+                _c("label", { attrs: { for: "inputCity" } }, [
+                  _vm._v("Capitulo 6"),
+                ]),
+                _vm._v(" "),
+                _c("input", {
+                  staticClass: "form-control",
+                  attrs: { readonly: "", type: "text", id: "inputCity" },
+                  domProps: { value: _vm.book.capitulo_6 },
+                }),
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "form-group col-md-6" }, [
+                _c("label", { attrs: { for: "inputCity" } }, [
+                  _vm._v("Capitulo 7"),
+                ]),
+                _vm._v(" "),
+                _c("input", {
+                  staticClass: "form-control",
+                  attrs: { readonly: "", type: "text", id: "inputCity" },
+                  domProps: { value: _vm.book.capitulo_7 },
+                }),
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "form-group col-md-6" }, [
+                _c("label", { attrs: { for: "inputCity" } }, [
+                  _vm._v("Capitulo 8"),
+                ]),
+                _vm._v(" "),
+                _c("input", {
+                  staticClass: "form-control",
+                  attrs: { readonly: "", type: "text", id: "inputCity" },
+                  domProps: { value: _vm.book.capitulo_8 },
+                }),
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "form-group col-md-6" }, [
+                _c("label", { attrs: { for: "inputCity" } }, [
+                  _vm._v("Capitulo 9"),
+                ]),
+                _vm._v(" "),
+                _c("input", {
+                  staticClass: "form-control",
+                  attrs: { readonly: "", type: "text", id: "inputCity" },
+                  domProps: { value: _vm.book.capitulo_9 },
+                }),
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "form-group col-md-6" }, [
+                _c("label", { attrs: { for: "inputCity" } }, [
+                  _vm._v("Capitulo 10"),
+                ]),
+                _vm._v(" "),
+                _c("input", {
+                  staticClass: "form-control",
+                  attrs: { readonly: "", type: "text", id: "inputCity" },
+                  domProps: { value: _vm.book.capitulo_10 },
+                }),
+              ]),
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "form-group" }, [
+              _c("label", { attrs: { for: "inputAddress" } }, [
+                _vm._v("Paginas"),
+              ]),
+              _vm._v(" "),
+              _c("input", {
+                staticClass: "form-control",
+                attrs: { readonly: "", type: "text", id: "inputAddress" },
+                domProps: { value: _vm.book.pages },
+              }),
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "form-group" }, [
+              _c("label", { attrs: { for: "inputAddress2" } }, [_vm._v("ISB")]),
+              _vm._v(" "),
+              _c("input", {
+                staticClass: "form-control",
+                attrs: { readonly: "", type: "text", id: "inputAddress2" },
+                domProps: { value: _vm.book.ISBN },
+              }),
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "form-row" }, [
+              _c("div", { staticClass: "form-group col-md-6" }, [
+                _c("label", { attrs: { for: "inputCity" } }, [
+                  _vm._v("Edicion"),
+                ]),
+                _vm._v(" "),
+                _c("input", {
+                  staticClass: "form-control",
+                  attrs: { readonly: "", type: "text", id: "inputCity" },
+                  domProps: { value: _vm.book.edition },
+                }),
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "form-group col-md-4" }, [
+                _c("label", { attrs: { for: "inputState" } }, [
+                  _vm._v("Editorial"),
+                ]),
+                _vm._v(" "),
+                _c("input", {
+                  staticClass: "form-control",
+                  attrs: { readonly: "", type: "text", id: "inputCity" },
+                  domProps: { value: _vm.book.editorial },
+                }),
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "form-group col-md-2" }, [
+                _c("label", { attrs: { for: "inputZip" } }, [
+                  _vm._v("Numero de serie"),
+                ]),
+                _vm._v(" "),
+                _c("input", {
+                  staticClass: "form-control",
+                  attrs: { readonly: "", type: "text", id: "inputZip" },
+                  domProps: { value: _vm.book.serialnumber },
+                }),
+              ]),
+            ]),
+            _vm._v(" "),
+            _c(
+              "button",
+              {
+                staticClass: "btn btn-danger mt-3",
+                attrs: { type: "button" },
+                on: {
+                  click: function () {
+                    _vm.showFromBook = !_vm.showFromBook
+                  },
+                },
+              },
+              [_vm._v("Cerrar")]
+            ),
+          ]),
+        ])
       : _vm._e(),
   ])
 }
-var staticRenderFns = [
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("table", { staticClass: "table" }, [
-      _c("thead", [
-        _c("tr", [
-          _c("th", { attrs: { scope: "col" } }, [
-            _vm._v("Total de ingresos en el año"),
-          ]),
-          _vm._v(" "),
-          _c("th", { attrs: { scope: "col" } }, [
-            _vm._v("Mujeres que asistieron"),
-          ]),
-          _vm._v(" "),
-          _c("th", { attrs: { scope: "col" } }, [
-            _vm._v("Hombres que asistieron"),
-          ]),
-          _vm._v(" "),
-          _c("th", { attrs: { scope: "col" } }, [_vm._v("Total de prestamos")]),
-        ]),
-      ]),
-      _vm._v(" "),
-      _c("tbody", [
-        _c("tr", [
-          _c("th", { attrs: { scope: "row" } }, [_vm._v("1")]),
-          _vm._v(" "),
-          _c("td", [_vm._v("Mark")]),
-          _vm._v(" "),
-          _c("td", [_vm._v("Otto")]),
-          _vm._v(" "),
-          _c("td", [_vm._v("@mdo")]),
-        ]),
-      ]),
-    ])
-  },
-]
+var staticRenderFns = []
 render._withStripped = true
 
 

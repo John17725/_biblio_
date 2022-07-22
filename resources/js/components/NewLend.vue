@@ -144,10 +144,20 @@
                 <input readonly type="text" class="form-control" id="inputZip" :value="bookLend.serialnumber">
               </div>
             </div>
-            <span  class="btn btn-success mt-2" v-on:click="finalizarPrestamo">Confirmar prestamo</span>
+            <span  class="btn btn-primary mt-2" v-on:click="agregarotrolibro">Agregar otro libro</span>
+            <span  class="btn btn-success mt-2" v-if="primary"  v-on:click="finalizarPrestamo">Confirmar prestamo</span>
           </form>
         </div>
       </div>
+      <div class="list-group" v-if="showlistBookslend">
+          <h2>Lista de libros a prestar</h2>
+          <span class="list-group-item list-group-item-action mt-2" 
+          readonly
+          aria-current="true" 
+          v-for="book in listbooklend" 
+          >{{book.title}} - Autor: {{book.author}} - {{book.pages}} Paginas - {{book.pieces}} piezas disponibles</span>
+            <span  class="btn btn-success mt-2" v-on:click="finalizarPrestamogrupo">Confirmar prestamo</span>
+        </div>
     </div>
   </div>
 </template>
@@ -171,7 +181,10 @@ export default {
       showformstudent: false,
       showfromNewLend: false,
       showlistBooks: true,
-      showFromBook: false
+      showFromBook: false,
+      showlistBookslend: false,
+      listbooklend: [],
+      primary: true,
     };
   },
   methods: {
@@ -182,15 +195,20 @@ export default {
       this.getStudentData(enrollmentStudent);
     },
     async searchBook(){
+      this.showlistBooks=true;
       const booktitle = document.getElementById("booktitle").value;
       console.log(booktitle);
       this.getBookData(booktitle)
     },
     lendGetBook(book){
-      this.showlistBooks = false;
-      console.log('Libro a prestar',book);
-      this.bookLend = book;
-      this.showFromBook = true;
+      if(book.pieces == 0){
+        Swal.fire('No hay existencias para prestamos')
+      }else{
+        this.showlistBooks = false;
+        console.log('Libro a prestar',book);
+        this.bookLend = book;
+        this.showFromBook = true;
+      }
     },
     newLend(){
       this.showfromNewLend = true;
@@ -211,10 +229,43 @@ export default {
         }
       });
     },
+    async agregarotrolibro(){
+      this.primary=false;
+      this.showlistBookslend = true;
+      console.log('Datos alumno que realiza prestamo:', this.alumnoLend.id);
+      console.log('Datos libro a prestar:', this.bookLend.id);
+      this.listbooklend.push(this.bookLend);
+      console.log(this.listbooklend)
+    },
+    async finalizarPrestamogrupo(){
+      console.log('Datos alumno que realiza prestamo:', this.alumnoLend.id);
+      console .log('Datos libros a prestar:', this.listbooklend);
+      this.postDataLends(this.alumnoLend.id,this.listbooklend);
+    },
     async finalizarPrestamo(){
       console.log('Datos alumno que realiza prestamo:', this.alumnoLend.id);
       console.log('Datos libro a prestar:', this.bookLend.id);
       this.postDataLend(this.alumnoLend.id,this.bookLend.id);
+    },
+    postDataLends(_idAlumno, _idBooks){
+      let postnewlends = window.routes.postnewlends;
+      axios.post(postnewlends, {
+        idAlumno: _idAlumno,
+        idBook: _idBooks
+      })
+      .then( (response) => {
+        Swal.fire({
+            title: response.data.message+' Folios: '+response.data.folios,
+            confirmButtonText: 'Ok',
+          }).then((result) => {
+            if (result.isConfirmed) {
+              window.location.reload()
+            }
+          })
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
     },
     postDataLend(_idAlumno, _idBook){
       let postnewlend = window.routes.postnewlend;

@@ -12,7 +12,7 @@ class LendsController extends Controller
 {
     public function index(){
         return view('lends.index', [
-            'lends' => Lends::orderBy('id','asc')->simplePaginate(10) 
+            'lends' => Lends::orderBy('id','asc')->get() 
         ]);
     }
     public function registerlend(){
@@ -68,6 +68,25 @@ class LendsController extends Controller
             return response()->json($response,200);
         }
     }
+    public function storenewlends(Request $request){
+        $var = $request['idBook'];
+        $folios = collect();
+        foreach($var as $key=> $item){
+            $lend = new Lends();
+            $lend->student_id = $request['idAlumno'];
+            $lend->book_id = $item['id'];
+            $book = Book::find($item['id']);
+            Book::find( $item['id'])->update(['pieces' => $book->pieces-1]);
+            $lend->save();
+            $folios->push($lend->id);
+        }
+        $response = [
+            'status' => 'success',
+            'message' => 'Prestamos exitosos',
+            'folios' => $folios,
+        ];
+        return response()->json($response,200);
+    }
 
     public function returnBook($id){
        Lends::find($id)->update(['end_date' => \Carbon\Carbon::now()]);
@@ -78,6 +97,15 @@ class LendsController extends Controller
         $search = true;
         $lend = Lends::find($request->folio);
         return view('lends.index', compact('lend','search'));
+    }
+    public function findlendname(Request $request){
+        $search = true;
+        $alumnos = Student::where('name','LIKE', '%'.$request->name.'%')->where('last_name','LIKE', '%'.$request->lastname.'%')->get()->last();
+        // dd($alumnos);
+        $lends = Lends::where('student_id',$alumnos->id)->get();
+        // dd($lends);
+
+        return view('lends.index', compact('lends'));
     }
 
     

@@ -5,6 +5,7 @@
         'getdatastudent' : '{{ route('prestamos.get.datastudent') }}',
         'getbookdatalend' : '{{ route('prestamos.get.databook') }}',
         'postnewlend' : '{{ route('prestamos.new.lend') }}',
+        'postnewlends' : '{{ route('prestamos.new.lends') }}',
     }
 </script>
 @section('content')

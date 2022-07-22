@@ -10,6 +10,29 @@
                 </div>
             </div>
         </form>
+        <form action="{{route('prestamos.find.lend.name')}}" method="POST">
+            @csrf
+            <div class="row">
+              <div class="col">
+                <input type="text" class="form-control" name="name" placeholder="Nombre">
+              </div>
+              <div class="col">
+                <input type="text" class="form-control" name="lastname" placeholder="Apellido paterno">
+              </div>
+              <div class="col">
+                <button class="btn btn-outline-secondary" type="submit" id="button-addon2">Buscar</button>
+                </div>
+            </div>
+          </form>
+        {{-- <form action="{{route('prestamos.find.lend.name')}}" method="POST">
+            @csrf
+            <div class="input-group mb-3">
+                <input type="text" class="form-control" placeholder="Buscar por nombre del alumno"  name="alumno" aria-describedby="button-addon2">
+                <div class="input-group-append">
+                    <button class="btn btn-outline-secondary" type="submit" id="button-addon2">Buscar</button>
+                </div>
+            </div>
+        </form> --}}
     </div>
     <div class="container">
         <h1>Prestamos</h1>
@@ -55,12 +78,12 @@
                 @endif
             </tbody>
         </table>
-        <nav aria-label="Page navigation example">
+        {{-- <nav aria-label="Page navigation example">
             @if (isset($lends))
                 <ul class="pagination justify-content-center">
                     {{ $lends->links() }}
                 </ul>
             @endif
-        </nav>
+        </nav> --}}
     </div>
 @endsection

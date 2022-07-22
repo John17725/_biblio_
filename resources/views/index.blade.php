@@ -1,6 +1,15 @@
 @extends('layouts.app')
+<script {{ asset('resources/js/app.js') }} defer></script>
+<script>
+    window.routes = {
+        'getbookdata' : '{{ route('libro.data') }}',
+    }
+</script>
 @section('content')
     <div class="container">
+        <div  id="app" class="container">
+            <searche-book />
+        </div>
         <h1>Libros</h1>
         <table class="table">
             <thead>

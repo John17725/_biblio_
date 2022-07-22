@@ -37,9 +37,11 @@ Route::get('/getStudentDataLend', [LendsController::class, 'getdatastudentlend']
 
 Route::get('/getBookDataLend', [LendsController::class, 'getbookdatalend'])->name('prestamos.get.databook');
 Route::post('/newLend', [LendsController::class, 'storenewlend'])->name('prestamos.new.lend');
+Route::post('/newLends', [LendsController::class, 'storenewlends'])->name('prestamos.new.lends');
 Route::get('devolver-libro/{id}', [LendsController::class, 'returnBook'])->name('prestamos.return.lend');
 
 Route::post('/buscar-prestamo', [LendsController::class, 'findlend'])->name('prestamos.find.lend');
+Route::post('/buscar-prestamo-nombre', [LendsController::class, 'findlendname'])->name('prestamos.find.lend.name');
 
 Route::get('estadisticas', [StatsController::class, 'stats'])->name('biblio.stats');
 
@@ -47,4 +49,6 @@ Route::get('estadisticas-year/{year}', [StatsController::class, 'getDataYear'])-
 
 
 Route::get('registrar-asistencia/', [AssistanceController::class, 'index'])->name('biblio.assistance.new');
+Route::post('/guardar-asistencia', [AssistanceController::class, 'save'])->name('biblio.assistance.save');
 
+Route::post('/getdatabook', [BookController::class, 'getdatabook'])->name('libro.data');

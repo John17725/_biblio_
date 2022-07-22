@@ -31,7 +31,7 @@ Vue.use(VueSweetalert2);
 
 // Vue.component('example-component', require('./components/ExampleComponent.vue').default);
 Vue.component('new-lend', require('./components/NewLend.vue').default);
-Vue.component('stats-component', require('./components/Stats.vue').default);
+Vue.component('searche-book', require('./components/SearcherBook.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
