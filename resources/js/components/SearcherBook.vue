@@ -77,6 +77,10 @@
               <input readonly type="text" class="form-control" id="inputAddress" :value="book.pages">
             </div>
             <div class="form-group">
+              <label for="inputAddress">Clasificacion </label>
+              <input readonly type="text" class="form-control" id="inputAddress" :value="book.clasification">
+            </div>
+            <div class="form-group">
               <label for="inputAddress2">ISB</label>
               <input readonly type="text" class="form-control" id="inputAddress2" :value="book.ISBN">
             </div>
