@@ -69,7 +69,18 @@ class BookController extends Controller
             return response()->json($response, 200);
         }
         if($request['author']){
-            $books = Book::where('title','LIKE', '%'.$request['title'].'%')->get();
+            $books = Book::where('author','LIKE', '%'.$request['author'].'%')->get();
+            $response = [
+                'data' => $books,
+                'message' => 'Consulta exitosa'
+            ];
+            return response()->json($response, 200);
+        }
+    }
+
+    public function getdatabookbarras(Request $request) {
+        if($request['barras']){
+            $books = Book::where('serialnumber','=', $request['barras'])->get();
             $response = [
                 'data' => $books,
                 'message' => 'Consulta exitosa'

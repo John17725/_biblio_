@@ -12,6 +12,12 @@
                 <button class="btn btn-outline-secondary" type="button" v-on:click="getSearchAuthor" id="button-addon2">Buscar</button>
             </div>
         </div>
+        <div class="input-group mb-3 mt-2">
+            <input type="text" class="form-control" id='barrasbuscar' placeholder="Busqueda por codigo de barras del libro" aria-label="Recipient's username" aria-describedby="button-addon2">
+            <div class="input-group-append">
+                <button class="btn btn-outline-secondary" type="button" v-on:click="getSearchCodeBarras" id="button-addon2">Buscar</button>
+            </div>
+        </div>
         <div class="list-group" v-if="showlistBooks">
           <span class="list-group-item list-group-item-action mt-2" 
           readonly
@@ -131,12 +137,23 @@ import 'sweetalert2/src/sweetalert2.scss'
                 this.getauthors(author)
                 
             },
+            async getSearchCodeBarras(){
+                const barras = document.getElementById("barrasbuscar").value;
+                console.log('barras',barras,);
+                this.getBarras(barras)
+            },
             gettitles(_title){
                 let getdata = window.routes.getbookdata;
                 axios.post(getdata, {
                     title: _title
                 }).then( (response) => {
                     this.books = response.data.data 
+                    if(response.data.data.length == 0){
+                       Swal.fire({
+                          title:'Sin resultados de busqueda',
+                          confirmButtonText: 'Ok',
+                        })
+                    } 
                     // console.log(response.data.data)
                 } )
             },
@@ -145,8 +162,29 @@ import 'sweetalert2/src/sweetalert2.scss'
                 axios.post(getdata, {
                     author: _author
                 }).then( (response) => {
-                    this.books = response.data.data 
+                    this.books = response.data.data
+                    if(response.data.data.length == 0){
+                       Swal.fire({
+                          title:'Sin resultados de busqueda',
+                          confirmButtonText: 'Ok',
+                        })
+                    } 
                     console.log(response.data.data)
+                } )
+            },
+            getBarras(_barras){
+              let getdatabarras = window.routes.getdatabookbarras;
+                axios.post(getdatabarras, {
+                    barras: _barras
+                }).then( (response) => {
+                    this.books = response.data.data
+                    if(response.data.data.length == 0){
+                       Swal.fire({
+                          title:'Sin resultados de busqueda',
+                          confirmButtonText: 'Ok',
+                        })
+                    } 
+                    console.log(response.data.data.length)
                 } )
             },
             lendGetBook(book){

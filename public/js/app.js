@@ -5826,6 +5826,16 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
@@ -5884,25 +5894,82 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         }, _callee2);
       }))();
     },
-    gettitles: function gettitles(_title) {
+    getSearchCodeBarras: function getSearchCodeBarras() {
       var _this3 = this;
+
+      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee3() {
+        var barras;
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee3$(_context3) {
+          while (1) {
+            switch (_context3.prev = _context3.next) {
+              case 0:
+                barras = document.getElementById("barrasbuscar").value;
+                console.log('barras', barras);
+
+                _this3.getBarras(barras);
+
+              case 3:
+              case "end":
+                return _context3.stop();
+            }
+          }
+        }, _callee3);
+      }))();
+    },
+    gettitles: function gettitles(_title) {
+      var _this4 = this;
 
       var getdata = window.routes.getbookdata;
       axios.post(getdata, {
         title: _title
       }).then(function (response) {
-        _this3.books = response.data.data; // console.log(response.data.data)
+        _this4.books = response.data.data;
+
+        if (response.data.data.length == 0) {
+          sweetalert2_dist_sweetalert2_js__WEBPACK_IMPORTED_MODULE_1___default().fire({
+            title: 'Sin resultados de busqueda',
+            confirmButtonText: 'Ok'
+          });
+        } // console.log(response.data.data)
+
       });
     },
     getauthors: function getauthors(_author) {
-      var _this4 = this;
+      var _this5 = this;
 
       var getdata = window.routes.getbookdata;
       axios.post(getdata, {
         author: _author
       }).then(function (response) {
-        _this4.books = response.data.data;
+        _this5.books = response.data.data;
+
+        if (response.data.data.length == 0) {
+          sweetalert2_dist_sweetalert2_js__WEBPACK_IMPORTED_MODULE_1___default().fire({
+            title: 'Sin resultados de busqueda',
+            confirmButtonText: 'Ok'
+          });
+        }
+
         console.log(response.data.data);
+      });
+    },
+    getBarras: function getBarras(_barras) {
+      var _this6 = this;
+
+      var getdatabarras = window.routes.getdatabookbarras;
+      axios.post(getdatabarras, {
+        barras: _barras
+      }).then(function (response) {
+        _this6.books = response.data.data;
+
+        if (response.data.data.length == 0) {
+          sweetalert2_dist_sweetalert2_js__WEBPACK_IMPORTED_MODULE_1___default().fire({
+            title: 'Sin resultados de busqueda',
+            confirmButtonText: 'Ok'
+          });
+        }
+
+        console.log(response.data.data.length);
       });
     },
     lendGetBook: function lendGetBook(book) {
@@ -34297,6 +34364,31 @@ var render = function () {
       ]),
     ]),
     _vm._v(" "),
+    _c("div", { staticClass: "input-group mb-3 mt-2" }, [
+      _c("input", {
+        staticClass: "form-control",
+        attrs: {
+          type: "text",
+          id: "barrasbuscar",
+          placeholder: "Busqueda por codigo de barras del libro",
+          "aria-label": "Recipient's username",
+          "aria-describedby": "button-addon2",
+        },
+      }),
+      _vm._v(" "),
+      _c("div", { staticClass: "input-group-append" }, [
+        _c(
+          "button",
+          {
+            staticClass: "btn btn-outline-secondary",
+            attrs: { type: "button", id: "button-addon2" },
+            on: { click: _vm.getSearchCodeBarras },
+          },
+          [_vm._v("Buscar")]
+        ),
+      ]),
+    ]),
+    _vm._v(" "),
     _vm.showlistBooks
       ? _c(
           "div",
@@ -34491,6 +34583,18 @@ var render = function () {
                 staticClass: "form-control",
                 attrs: { readonly: "", type: "text", id: "inputAddress" },
                 domProps: { value: _vm.book.pages },
+              }),
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "form-group" }, [
+              _c("label", { attrs: { for: "inputAddress" } }, [
+                _vm._v("Clasificacion "),
+              ]),
+              _vm._v(" "),
+              _c("input", {
+                staticClass: "form-control",
+                attrs: { readonly: "", type: "text", id: "inputAddress" },
+                domProps: { value: _vm.book.clasification },
               }),
             ]),
             _vm._v(" "),

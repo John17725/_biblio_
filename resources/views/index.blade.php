@@ -3,6 +3,7 @@
 <script>
     window.routes = {
         'getbookdata' : '{{ route('libro.data') }}',
+        'getdatabookbarras' : '{{route('libro.databarras')}}'
     }
 </script>
 @section('content')
@@ -23,6 +24,7 @@
                     <th scope="col">Piezas/Ejemplares</th>
                     <th scope="col">Clasificacion</th>
                     <th scope="col">Editorial</th>
+                    <th scope="col">Numero de codigo de barras</th>
                     <th scope="col">Place</th>
                 </tr>
             </thead>
@@ -38,6 +40,7 @@
                         <td>{{ $item->pieces }}</td>
                         <td>{{ $item->clasification }}</td>
                         <td>{{ $item->editorial }}</td>
+                        <td>{{ $item->serialnumber }}</td>
                         <td>{{ $item->place }}</td>
                     </tr>
                 @endforeach

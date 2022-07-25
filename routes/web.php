@@ -52,3 +52,4 @@ Route::get('registrar-asistencia/', [AssistanceController::class, 'index'])->nam
 Route::post('/guardar-asistencia', [AssistanceController::class, 'save'])->name('biblio.assistance.save');
 
 Route::post('/getdatabook', [BookController::class, 'getdatabook'])->name('libro.data');
+Route::post('/getdatabookbarras', [BookController::class, 'getdatabookbarras'])->name('libro.databarras');
